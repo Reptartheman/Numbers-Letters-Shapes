@@ -1,0 +1,46 @@
+:root{
+    --fontgroup:'Courier New', Courier, monospace;
+}
+
+
+
+header{
+    font-size: xx-large;
+    font-family: var(--fontgroup);
+    background-color: cornflowerblue;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: row wrap;
+}
+
+section{
+    display: flex;
+    background-color: cornsilk;
+    justify-content: center;
+    padding-top: 60px;
+    align-items: center;
+    flex-direction: column;
+    text-align: center;
+}
+
+section > p{
+    font-family: var(--fontgroup);
+    font-weight: bolder;
+}
+
+
+
+button{
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    transition: all .35s ease-out;
+    justify-content: center;
+    background-color: cornsilk;
+    color: cornflowerblue; 
+    font-size: x-large;
+    font-family: var(--fontgroup);
+    font-weight: bolder;
+    width: 10em;
+    cursor: pointer;
+}
