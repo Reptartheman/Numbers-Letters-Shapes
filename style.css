@@ -2,6 +2,9 @@
     --fontgroup:'Courier New', Courier, monospace;
 }
 
+body{
+    background-color: cornsilk;
+}
 
 
 header{
@@ -15,6 +18,8 @@ header{
 
 section{
     display: flex;
+    font-family: var(--fontgroup);
+    font-weight: bold;
     background-color: cornsilk;
     justify-content: center;
     padding-top: 60px;

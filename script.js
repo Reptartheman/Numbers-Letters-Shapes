@@ -8,11 +8,11 @@ THEN I am presented with another question✅
 WHEN I answer a question incorrectly✅
 THEN time is subtracted from the clock✅
 
-WHEN all questions are answered or the timer reaches 0 DONE
-THEN the game is over DONE
+WHEN all questions are answered or the timer reaches 0 ✅
+THEN the game is over ✅
 
-WHEN the game is over
-THEN I can save my initials and my score*/
+WHEN the game is over✅
+THEN I can save my initials and my score*/✅
 
 const buttonStart = document.querySelector("#buttonStart");
 const questionDiv = document.querySelector("#questions");
@@ -115,12 +115,13 @@ function captureScore(){
     name: name,
     score: timeLeft
    }; 
-}
-  console.log("timeLeft is equal to: " + name + timeLeft);
+   console.log("timeLeft is equal to: " + name + timeLeft);
    if (!previousHS) {
-    localStorage.setItem("highScore" , currentScore);console.log("record setter")
-   localStorage.setItem("highScore" , currentScore)
+    localStorage.setItem("highScore" , JSON.stringify(currentScore));console.log("record setter")
+   //localStorage.setItem("highScore" , currentScore)
    console.log("newhighscore");
    } else if (previousHS.score < timeLeft) { 
     } else {console.log("do better next")};
+}
+ 
 
