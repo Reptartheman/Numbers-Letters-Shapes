@@ -5,11 +5,11 @@ THEN a timer starts and I am presented with a question✅
 WHEN I answer a question ✅
 THEN I am presented with another question✅
 
-WHEN I answer a question incorrectly
-THEN time is subtracted from the clock
+WHEN I answer a question incorrectly✅
+THEN time is subtracted from the clock✅
 
-WHEN all questions are answered or the timer reaches 0
-THEN the game is over
+WHEN all questions are answered or the timer reaches 0 DONE
+THEN the game is over DONE
 
 WHEN the game is over
 THEN I can save my initials and my score*/
@@ -20,6 +20,7 @@ let answersDiv = document.querySelector("#listanswers");
 let answerButtons = document.querySelectorAll("#answers");
 let questionNumber1 = 0;
 var timeLeft
+
 
 
 
@@ -51,7 +52,7 @@ const quizQuestions = [
 //                                  START QUIZ                          //
 function startQuiz(){
 displayQuestions()
-timeLeft = 100
+timeLeft = 60
 var timer = setInterval(function() {
         timeLeft--;
         if (timeLeft >= 0) {
@@ -85,7 +86,10 @@ function clickAnswer(event){
             timeLeft = 0
         }
         }
-    questionNumber1++
+        questionNumber1++
+    if(questionNumber1 == quizQuestions.length){
+        gameOver()
+    }  
     displayQuestions()
     
         //if(element === quizQuestions[questionNumber1].correctAnswer)
@@ -93,28 +97,30 @@ function clickAnswer(event){
 buttonStart.addEventListener("click", startQuiz)
 answersDiv.onclick = clickAnswer
 
+if (timeLeft <= 0){
+gameOver()   
+}
 
+function gameOver(){
+alert("GAME OVER!");
+captureScore();
+clearInterval(timer);
+timeLeft = 0;
+}
 
+function captureScore(){
+   var name = prompt("Enter your initials and the time remaining")
+   let previousHS = localStorage.getItem("highScore"); 
+   let currentScore = {
+    name: name,
+    score: timeLeft
+   }; 
+}
+  console.log("timeLeft is equal to: " + name + timeLeft);
+   if (!previousHS) {
+    localStorage.setItem("highScore" , currentScore);console.log("record setter")
+   localStorage.setItem("highScore" , currentScore)
+   console.log("newhighscore");
+   } else if (previousHS.score < timeLeft) { 
+    } else {console.log("do better next")};
 
-//                              FUNCTION FOR NEXT QUESTIONS                         //
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//                      QUESTION FUNCTIONS          //
-
-
-// I want the RIGHT answer to go to nextQuestion.
-// I want wrong answer to alert WRONG! then subtract time.
