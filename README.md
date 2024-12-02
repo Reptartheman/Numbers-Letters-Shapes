@@ -1,7 +1,1 @@
-# JavaScript Code Quiz
-
-## This challenge features a simple JavaScript Code quiz that has 4 questions. Each question takes you to the next question upon answering the one before it. While I am still not 100% confident in my Javascript abilites, this assignment got me one step closer to that goal. The problem this web app solves is simple. Many beginning programmers struggle with JavaScript and it's many terms and fuctionality. While the quiz is short, it has questions that may clarify some terms for people struggling to wrap their heads around JavaScript. Compared to the last challenge, I would say my understanding and reading of JavaScript is starting to come to fruition but there are still a lot of concepts that I need to go over. 
-
-## The instructions for the use of this app are simple. When you enter the application you are presented with a 'Start' button. After clicking the start button the timer in the top right of the page starts and then you are prsented with a series of questions. When you click the correct answer on the screen, it moves to the next question. If you get the answer wrong, 15 seconds gets deducted from you time. At the end of the quiz you simply enter your initials and your score gets saved to local storage and can be viewed by other quiz takers.
-
-##For this web abb I used a few resources to gain understanding from. I found a book called 'JavaScript for Kids' which explains JavaScript concepts fairly simply. I also used the many learning resources made available to students of the bootcamp. As well as a plethora of Instagram pages and YouTube to help me through this assignment.
+# Numbers-Letters-Shapes
