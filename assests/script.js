@@ -14,87 +14,97 @@ THEN the game is over ✅
 WHEN the game is over✅
 THEN I can save my initials and my score  ✅*/
 
-const buttonStart = document.querySelector("#buttonStart");
-const questionDiv = document.querySelector("#questions");
-let answersDiv = document.querySelector("#listanswers");
+const startButton = document.getElementById("startButton");
+const questionDiv = document.getElementById("questions");
+const characterDisplay = document.getElementById("characterDisplay");
+let answersDiv = document.getElementById("listanswers");
 let answerButtons = document.querySelectorAll("#answers");
-let questionNumber1 = 0;
-var timeLeft
+let startIndex = 0;
+let timeLeft
 
-
-
-
-//                                      QUIZ MATERIAL                   //
-//Add buttons to question one selections then add to other questions.
+const getRandomNumber = (min, max) => {
+    return Math.floor(Math.random() * (max - min) + min);
+};
+  
+const randomNumber = getRandomNumber(0, 9);
 
 const quizQuestions = [
-    {   question: "Inside which HTML element do we put the JavaScript??",
-        answers: ["<scripting>", "<js>", "<header>", "<script>"],
-        correctAnswer: "<script>" 
+    {   question: "How many X's do you see?",
+        characters: "X, X",
+        answers: [`${randomNumber}`, `${randomNumber}`, `${randomNumber}`],
+        correctAnswer: 2 
        
     },
-    {   question: "Where is the correct place to insert the <script> tag?",
-        answers:  ["The <body> section", "The first <h1> element", "Both the <head> and <body> section", "At the end of the CSS file"],
-        correctAnswer: "Both the <head> and <body> section"
-      
+    {   question: "Question 2 ???",
+        characters: "X, X",
+        answers: [1, 2, 3],
+        correctAnswer: 2 
+       
     },
-    {
-        question: "How can you add a comment in a JavaScript?",
-        answers:["~ New Comment ~","//New Comment", "<NewComment>", "$NewComment$"],
-        correctAnswer: "//New Comment"
-        },
-    {
-        question: "What is the correct syntax for writing a function?",
-        answers:["function = newFunction()", "function newFunction()", "function//newFunction", "function.newFunction"],
-        correctAnswer: "function newFunction()"
-    }
+    {   question: "Question 3 ???",
+        characters: "X, X",
+        answers: [1, 2, 3],
+        correctAnswer: 2 
+       
+    },
+    {   question: "Question 3 ???",
+        characters: "X, X",
+        answers: [1, 2, 3],
+        correctAnswer: 2 
+       
+    },
+    {   question: "Question 4 ???",
+        characters: "X, X",
+        answers: [1, 2, 3],
+        correctAnswer: 2 
+       
+    },
+  
 ];
-//                                  START QUIZ                          //
-function startQuiz(){
-displayQuestions()
-timeLeft = 60
-var timer = setInterval(function() {
-        timeLeft--;
-        if (timeLeft >= 0) {
-          span = document.getElementById("timer");
-          span.innerHTML = "Time: " + timeLeft;
-        }
-        if (timeLeft === 0) {
-            alert('Sorry, out of time');
-            clearInterval(timer);
-        }
-      }, 1000);
-    };
 
-function displayQuestions(){
-    questionDiv.textContent = quizQuestions[questionNumber1].question
+
+
+function displayQuestions(array, index){
+    questionDiv.textContent = array[index].question
+    characterDisplay.textContent = array[index].characters
     answersDiv.innerHTML = ""
-    for(let i = 0; i<=3; i++){
-    var newLi = document.createElement("button")
-        newLi.textContent = quizQuestions[questionNumber1].answers[i]
-        answersDiv.appendChild(newLi)
-    }
+    displayAnswerButtons(array);
 }
 
+function displayAnswerButtons(array) {
+    const answersArray = array.map(question => question.answers)
+        .map(answer => answer);
+    console.log(answersArray);
+    answersArray.forEach((answer, index) => {
+        const newButton = document.createElement("button")
+            newButton.textContent = answer;
+            answersDiv.appendChild(newButton)
+    })
+
+}
+
+
+
+
 function clickAnswer(event){
-    var element = event.target.textContent
+    let element = event.target.textContent
     console.log("event target" , element)
-    console.log("correct Answer",quizQuestions[questionNumber1].correctAnswer)
-        if(element !== quizQuestions[questionNumber1].correctAnswer){
+    console.log("correct Answer",quizQuestions[startIndex].correctAnswer)
+        if(element !== quizQuestions[startIndex].correctAnswer){
             timeLeft -= 15
         if(timeLeft < 0){
             timeLeft = 0
         }
         }
-        questionNumber1++
-    if(questionNumber1 == quizQuestions.length){
+        startIndex++
+    if(startIndex == quizQuestions.length){
         gameOver()
     }  
-    displayQuestions()
+    displayQuestions(quizQuestions, startIndex);
     
-        //if(element === quizQuestions[questionNumber1].correctAnswer)
+        //if(element === quizQuestions[startIndex].correctAnswer)
 }
-buttonStart.addEventListener("click", startQuiz)
+
 answersDiv.onclick = clickAnswer
 
 if (timeLeft <= 0){
@@ -109,7 +119,7 @@ timeLeft = 0;
 }
 
 function captureScore(){
-   var name = prompt("Enter your initials and the time remaining")
+   let name = prompt("Enter your initials and the time remaining")
    let previousHS = localStorage.getItem("highScore"); 
    let currentScore = {
     name: name,
@@ -124,4 +134,19 @@ function captureScore(){
     } else {console.log("do better next")};
 }
  
-
+function startQuiz(){
+displayQuestions(quizQuestions, startIndex)
+/* timeLeft = 60
+let timer = setInterval(function() {
+        timeLeft--;
+        if (timeLeft >= 0) {
+          const timerDisplay = document.getElementById("timer");
+          timerDisplay.innerHTML = "Time: " + timeLeft;
+        }
+        if (timeLeft === 0) {
+            alert('Sorry, out of time');
+            clearInterval(timer);
+        }
+      }, 1000); */
+    };
+    startButton.addEventListener("click", startQuiz)
