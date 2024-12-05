@@ -1,7 +1,7 @@
 const startButton = document.getElementById("startButton");
 const questionDiv = document.getElementById("questions");
-const characterDisplay = document.getElementById("characterDisplay");
-const answersDiv = document.getElementById("listanswers");
+const imageDisplay = document.getElementById("imageDisplay");
+const answersList = document.getElementById("answersList");
 const answerButtons = document.querySelectorAll("#answers");
 const filePath = './assets/images';
 let startIndex = 0;
@@ -28,53 +28,65 @@ const getRandomNumber = (min, max) => {
 };
 
 
-const randomNumber = getRandomNumber(0, 4);
+const randomNumber = getRandomNumber(1, 3);
 const randomNumberImg = getRandomizedItems(numbers);
 const randomShapeImg = getRandomizedItems(shapes);
 
 const arrayOfXs = Array.from({length: randomNumber}, () => theX);
 const randomXs = getRandomizedItems(arrayOfXs);
 
-
-const renderImageSource = (item) => {
-  const newButton = document.createElement("button");
-  const image = document.createElement("img");
-  image.src = item;
-  newButton.appendChild(image);
-  answersDiv.appendChild(newButton);
-};
-
-const quizQuestions = [
-  {
-    question: "How many X's do you see?",
-    characters: randomXs,
-    answers: '',
-    correctAnswer: 2,
-  },
-  {
-    question: "What Number is this?",
-    characters: randomNumberImg,
-    answers: '',
-    correctAnswer: 2,
-  },
+const quizData = [
   {
     question: "What shape is this?",
-    characters: randomShapeImg,
+    images: randomShapeImg,
     answers: ['Triangle', 'Circle', 'Square'],
-    correctAnswer: 2,
+    correctAnswer: function () {
+      for (let i = 0; i <= this.answers.length; i++) {
+        if (this.images.includes(this.answers[i])) {
+          return this.answers[i]
+        }
+      }
+      return null;
+    },
   },
 ];
 
-const questionsArray = quizQuestions.map(question => question.question);
-const charactersArray = quizQuestions.map(character => character.characters);
-const randomCharacter = getRandomizedItems(charactersArray);
-console.log(randomCharacter);
-function displayQuestions(array, index, item) {
-  questionDiv.textContent = array[index];
-  characterDisplay.textContent = renderImageSource(item);
-  answersDiv.innerHTML = "";
+console.log(randomShapeImg)
+
+
+
+const questionsArray = quizData.map(question => question.question);
+
+
+const displayImagesForQuestions = () => {
+  const newImage = document.createElement("img");
+  newImage.src = quizData[0].images;
+  imageDisplay.appendChild(newImage);
 }
 
 
+const displayAnswers = (array) => {
 
-displayQuestions(questionsArray, randomNumber, randomCharacter);
+  answersList.innerHTML = "";
+  array.forEach((answer) => {
+    const newButton = document.createElement("button");
+    newButton.textContent = answer;
+    answersList.appendChild(newButton);
+  });
+};
+
+function displayQuestions(array, index) {
+  questionDiv.textContent = array[index];
+
+}
+
+function startQuiz() {
+  displayQuestions(questionsArray, 0);
+  displayAnswers(quizData[0].answers);
+  displayImagesForQuestions();
+}
+
+
+const currentQuestion = quizData[0];
+console.log("Correct Answer:", currentQuestion.correctAnswer());
+startQuiz();
