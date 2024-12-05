@@ -1,5 +1,7 @@
+@import url("https://fonts.googleapis.com/css2?family=Architects+Daughter&display=swap");
+
 :root{
-    --fontgroup:'Courier New', Courier, monospace;
+    --main-font: "Architects Daughter", cursive;
 }
 
 body{
@@ -9,7 +11,7 @@ body{
 
 header{
     font-size: xx-large;
-    font-family: var(--fontgroup);
+    font-family: var(--main-font);
     background-color: cornflowerblue;
     display: flex;
     justify-content: space-between;
@@ -18,7 +20,7 @@ header{
 
 section{
     display: flex;
-    font-family: var(--fontgroup);
+    font-family: var(--main-font);
     font-weight: bold;
     background-color: cornsilk;
     justify-content: center;
@@ -29,7 +31,7 @@ section{
 }
 
 section > p{
-    font-family: var(--fontgroup);
+    font-family: var(--main-font);
     font-weight: bolder;
 }
 
@@ -44,7 +46,7 @@ button{
     background-color: cornsilk;
     color: cornflowerblue; 
     font-size: x-large;
-    font-family: var(--fontgroup);
+    font-family: var(--main-font);
     font-weight: bolder;
     width: 10em;
     cursor: pointer;
