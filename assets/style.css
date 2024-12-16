@@ -48,6 +48,15 @@ button{
     font-size: x-large;
     font-family: var(--main-font);
     font-weight: bolder;
-    width: 10em;
+    width: 7em;
+    gap: 15px;
     cursor: pointer;
+}
+
+.question-state-container {
+    font-size: 60px;
+}
+
+.question-state-container p.countdown {
+    font-size: 75px;
 }
