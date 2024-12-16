@@ -7,21 +7,6 @@ const filePath = "./assets/images";
 let startIndex = 0;
 let timeLeft;
 
-const numbers = [
-  `${filePath}/1.svg`,
-  `${filePath}/2.svg`,
-  `${filePath}/3.svg`,
-  `${filePath}/4.svg`,
-  `${filePath}/5.svg`,
-];
-const shapes = [
-  `${filePath}/Triangle.svg`,
-  `${filePath}/Circle.svg`,
-  `${filePath}/Square.svg`,
-];
-
-const theX = `${filePath}/X.svg`;
-
 const getRandomizedItems = (arr) => {
   return arr[Math.floor(Math.random() * arr.length)];
 };
@@ -30,24 +15,36 @@ const getRandomNumber = (min, max) => {
   return Math.floor(Math.random() * (max - min) + min);
 };
 
-//const randomNumber = getRandomNumber(1, 6); //for length of X's array to be used when generating the X's images for answers
- //array of X images to be used for display of X images
-
 const quizData = {
   questions: [
-    "What shape is this?",
+    `What shape is this?`,
     "What number do you see?",
     "How many X's do you see?",
   ],
-  images: [getRandomizedItems(shapes), getRandomizedItems(numbers)],
+  
   answers:
     {
       shapes: ["Triangle", "Circle", "Square"],
       numbers: [1, 2, 3, 4, 5],
     },
+  numbersImageSources: [
+    `${filePath}/1.svg`,
+    `${filePath}/2.svg`,
+    `${filePath}/3.svg`,
+    `${filePath}/4.svg`,
+    `${filePath}/5.svg`,
+  ],
+  shapesImageSources: [
+    `${filePath}/Triangle.svg`,
+    `${filePath}/Circle.svg`,
+    `${filePath}/Square.svg`,
+  ],
+  theXImageSource: `${filePath}/X.svg`,
+  images: [getRandomizedItems(quizData.shapesImageSources), getRandomizedItems(quizData.numbersImageSources)],
+  
 };
 
-
+//if the clicked answers value, matches the source of the image, it is correct
 
 const displayImagesForQuestions = (imageSrc) => {
    imageDisplay.innerHTML = "";
@@ -82,12 +79,11 @@ function displayXs() {
 
 function displayAnswers(answers) {
   answersList.innerHTML = "";
-
   answers.forEach((answer) => {
     const button = document.createElement("button");
     button.textContent = answer;
-    button.addEventListener("click", () => {
-      prompt('hi');
+    button.addEventListener("click", (e) => {
+      
     });
     answersList.appendChild(button);
   });
@@ -109,22 +105,12 @@ function displayRandomQuestion(arr) {
 
 }
 
-function displayResultForQuestion(array) {
-  array.forEach((answer) => {
-    answer.addEventListener("click", (e) => {
-      if (e.target.textContent === quizData[0].correctAnswer()) {
-        confirm("correct");
-      } else {
-        alert("wrong");
-      }
-    });
-  });
-}
+
 
 function startQuiz() {
   displayRandomQuestion(quizData.questions);
 }
 
-//displayResultForQuestion(answerButtons)
+
 
 startButton.addEventListener("click", startQuiz);
