@@ -19,7 +19,7 @@ const logger = (item) => {
   console.log(item);
 }
 
-const generateSources = (categoriesArray, filePath) => {
+const generateSources = (categoriesArray) => {
   return categoriesArray.flatMap(({ category, items }) =>
     items.map((item) => ({
       questionCategory: category,
@@ -47,7 +47,7 @@ const quizData = {
     numbers: [1, 2, 3, 4, 5],
   },
 
-  sources: generateSources(categories, filePath)
+  sources: generateSources(categories)
 };
 
 //array, prop1, correctSource
@@ -134,10 +134,11 @@ const finishQuiz = (boolean) => {
     startButton.onclick = restartQuiz;
 };
 
-const displayImage = (imageSource) => {
+const displayImage = (imageSource, imageName) => {
   clearText(imageDisplay);
   const img = document.createElement("img");
   img.src = imageSource;
+  img.alt = imageName;
   imageDisplay.appendChild(img);
 };
 
@@ -163,11 +164,15 @@ const getCorrectImageSource = (array, prop1, prop2) => {
       throwSourceErrorMessage(array, elem[prop1]);
     }
   })
-};
+}; //find the element in the array where the pathToFile includes the imageName
+  // pathToFile: ./assets/images/Triangle.svg, imageName: 'Triangle'
+  //if I use .map() that gives me an array of file paths.
 
-//const correctSource = getCorrectImageSource(quizData.sources, 'pathToFile', 'imageName');
+  
 
-//console.log(correctSource);
+const correctSource = getCorrectImageSource(quizData.sources, 'pathToFile', 'imageName');
+
+console.log(correctSource);
 
 
 const handleQuestionDisplay = (questionData) => {
@@ -180,13 +185,11 @@ const handleQuestionDisplay = (questionData) => {
   throwSourceErrorMessage(correctSource, correctAnswer);
 
   // Display image (using handler for special cases like multiple images)
-  const handleImage = imageHandler(correctSource);
+  const handleImage = imageHandler(correctSource, );
   console.log(handleImage);
   // Display answers
   displayAnswers(answers, correctAnswer, () => loadNextQuestion());
 };
-
-
 
 
 
@@ -200,27 +203,28 @@ const displayRandomQuestion = (arr) => {
     "What shape is this?": {
       questionType: "shape",
       answers: quizData.answers.shapes, //answers to be displayed
-      sourceFilters: { questionCategory: "shape" },
-      correctAnswer: getRandomizedItem(quizData.answers.shapes),
-      imageHandler: (source) => displayImage(source), //supposed to display the image
+      sourceFilters: { questionCategory: "shape" }, // THIS SHOULD BE A FILE PATH, NOT A CATEGORY
+      correctAnswer: getRandomizedItem(quizData.answers.shapes), //getting random image, user clicks on button, this is right answer
+      imageHandler: (source, sourceName) => displayImage(source, sourceName), //supposed to display the image
     },
     "What number do you see?": {
       questionType: "number",
       answers: quizData.answers.numbers,
       sourceFilters: { questionCategory: "number" },
       correctAnswer: getRandomizedItem(quizData.answers.numbers),
-      imageHandler: (source) => displayImage(source),
+      imageHandler: (source, sourceName) => displayImage(source, sourceName),
     },
     "How many X's do you see?": {
       questionType: "shapeX",
       answers: [1, 2, 3, 4, 5],
       sourceFilters: { questionCategory: "shapeX", imageName: "X" },
       correctAnswer: Math.floor(Math.random() * 5) + 1,
-      imageHandler: (source) => {
+      imageHandler: (source, sourceName) => {
         clearText(imageDisplay);
         Array.from({ length: Math.floor(Math.random() * 5) + 1 }).forEach(() => {
           const img = document.createElement("img");
           img.src = source;
+          img.alt = sourceName;
           imageDisplay.appendChild(img);
         });
       },
@@ -230,7 +234,14 @@ const displayRandomQuestion = (arr) => {
   // Handle the display of the current question
   const config = questionConfigs[randomQuestion];
   if (config) {
-    console.log(config);
+    console.log(
+      `questionType: ${config.questionType}
+      answers: ${config.answers}
+      sourceFilters: ${config.sourceFilters.questionCategory}
+      correctAnswer: ${config.correctAnswer}
+      imageHandler: ${config.imageHandler(correctSource)}
+      `
+    );
     handleQuestionDisplay(config);
   }
 };
