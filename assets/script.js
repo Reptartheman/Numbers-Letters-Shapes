@@ -50,12 +50,6 @@ const quizData = {
   sources: generateSources(categories)
 };
 
-//array, prop1, correctSource
-
-
-
-
-
 
 const clearText = (...elements) => {
   elements.forEach((element) => {
@@ -67,13 +61,13 @@ const updateTextContent = (element, text = "") => {
   element.textContent = text;
 };
 
-const displayAnswers = (answers, correctAnswer, callback) => {
+const displayAnswers = (answers, displayedImage, callback) => {
   clearText(answersList);
   answers.forEach((answer) => {
     const button = document.createElement("button");
     button.textContent = answer;
     button.addEventListener("click", () => {
-      if (answer === correctAnswer) {
+      if (answer === displayedImage) {
         scoreCounter++;
         userScore.textContent =
           scoreCounter === 1
@@ -176,19 +170,19 @@ console.log(correctSource);
 
 
 const handleQuestionDisplay = (questionData) => {
-  const { questionType, answers, sourceFilters, correctAnswer, imageHandler } =
+  const { questionType, answers, sourceFilters, displayedImage, imageHandler } =
     questionData;
 
   
 
   const correctSource = getCorrectImageSource(quizData.sources, sourceFilters);
-  throwSourceErrorMessage(correctSource, correctAnswer);
+  throwSourceErrorMessage(correctSource, displayedImage);
 
   // Display image (using handler for special cases like multiple images)
   const handleImage = imageHandler(correctSource, );
   console.log(handleImage);
   // Display answers
-  displayAnswers(answers, correctAnswer, () => loadNextQuestion());
+  displayAnswers(answers, displayedImage, () => loadNextQuestion());
 };
 
 
@@ -204,21 +198,21 @@ const displayRandomQuestion = (arr) => {
       questionType: "shape",
       answers: quizData.answers.shapes, //answers to be displayed
       sourceFilters: { questionCategory: "shape" }, // THIS SHOULD BE A FILE PATH, NOT A CATEGORY
-      correctAnswer: getRandomizedItem(quizData.answers.shapes), //getting random image, user clicks on button, this is right answer
+      displayedImage: getRandomizedItem(quizData.answers.shapes), //this is the image that is displayed
       imageHandler: (source, sourceName) => displayImage(source, sourceName), //supposed to display the image
     },
     "What number do you see?": {
       questionType: "number",
       answers: quizData.answers.numbers,
       sourceFilters: { questionCategory: "number" },
-      correctAnswer: getRandomizedItem(quizData.answers.numbers),
+      displayedImage: getRandomizedItem(quizData.answers.numbers),
       imageHandler: (source, sourceName) => displayImage(source, sourceName),
     },
     "How many X's do you see?": {
       questionType: "shapeX",
       answers: [1, 2, 3, 4, 5],
       sourceFilters: { questionCategory: "shapeX", imageName: "X" },
-      correctAnswer: Math.floor(Math.random() * 5) + 1,
+      displayedImage: Math.floor(Math.random() * 5) + 1,
       imageHandler: (source, sourceName) => {
         clearText(imageDisplay);
         Array.from({ length: Math.floor(Math.random() * 5) + 1 }).forEach(() => {
@@ -238,7 +232,7 @@ const displayRandomQuestion = (arr) => {
       `questionType: ${config.questionType}
       answers: ${config.answers}
       sourceFilters: ${config.sourceFilters.questionCategory}
-      correctAnswer: ${config.correctAnswer}
+      displayedImage: ${config.displayedImage}
       imageHandler: ${config.imageHandler(correctSource)}
       `
     );
