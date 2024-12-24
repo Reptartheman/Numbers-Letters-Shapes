@@ -156,10 +156,18 @@ const throwSourceErrorMessage = (source, correctSourceType) => {
 };
 
 const getCorrectImageSource = (array, prop1, prop2) => {
-  return array.find((elem) => elem[prop1].includes(source[prop2]));
+  return array.find((elem) => {
+    if (elem[prop1].includes(elem[prop2])) {
+      return elem[prop1]
+    } else {
+      throwSourceErrorMessage(array, elem[prop1]);
+    }
+  })
 };
 
+//const correctSource = getCorrectImageSource(quizData.sources, 'pathToFile', 'imageName');
 
+//console.log(correctSource);
 
 
 const handleQuestionDisplay = (questionData) => {
@@ -191,10 +199,10 @@ const displayRandomQuestion = (arr) => {
   const questionConfigs = {
     "What shape is this?": {
       questionType: "shape",
-      answers: quizData.answers.shapes,
+      answers: quizData.answers.shapes, //answers to be displayed
       sourceFilters: { questionCategory: "shape" },
       correctAnswer: getRandomizedItem(quizData.answers.shapes),
-      imageHandler: (source) => displayImage(source),
+      imageHandler: (source) => displayImage(source), //supposed to display the image
     },
     "What number do you see?": {
       questionType: "number",
