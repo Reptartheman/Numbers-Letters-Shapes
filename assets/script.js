@@ -15,6 +15,25 @@ let isTheQuizOver = false;
 let scoreCounter = 0;
 let questionAmount = 1;
 const getRandomizedItem = (arr) => arr[Math.floor(Math.random() * arr.length)];
+const logger = (item) => {
+  console.log(item);
+}
+
+const generateSources = (categoriesArray) => {
+  return categoriesArray.flatMap(({ category, items }) =>
+    items.map((item) => ({
+      questionCategory: category,
+      imageName: item,
+      pathToFile: `${filePath}/${item}.svg`,
+    }))
+  );
+};
+
+const categories = [
+  { category: "shape", items: ["Triangle", "Circle", "Square"] },
+  { category: "shapeX", items: ["X"] },
+  { category: "number", items: [1, 2, 3, 4, 5] },
+];
 
 const quizData = {
   questions: [
@@ -28,30 +47,15 @@ const quizData = {
     numbers: [1, 2, 3, 4, 5],
   },
 
-  sources: [
-    {
-      sourceType: "shape",
-      imageName: "Triangle",
-      source: `${filePath}/Triangle.svg`,
-    },
-    {
-      sourceType: "shape",
-      imageName: "Circle",
-      source: `${filePath}/Circle.svg`,
-    },
-    {
-      sourceType: "shape",
-      imageName: "Square",
-      source: `${filePath}/Square.svg`,
-    },
-    { sourceType: "shapeX", imageName: "X", source: `${filePath}/X.svg` },
-    { sourceType: "number", imageName: 1, source: `${filePath}/1.svg` },
-    { sourceType: "number", imageName: 2, source: `${filePath}/2.svg` },
-    { sourceType: "number", imageName: 3, source: `${filePath}/3.svg` },
-    { sourceType: "number", imageName: 4, source: `${filePath}/4.svg` },
-    { sourceType: "number", imageName: 5, source: `${filePath}/5.svg` },
-  ],
+  sources: generateSources(categories)
 };
+
+//array, prop1, correctSource
+
+
+
+
+
 
 const clearText = (...elements) => {
   elements.forEach((element) => {
@@ -62,8 +66,6 @@ const clearText = (...elements) => {
 const updateTextContent = (element, text = "") => {
   element.textContent = text;
 };
-
-
 
 const displayAnswers = (answers, correctAnswer, callback) => {
   clearText(answersList);
@@ -113,30 +115,38 @@ const startCountdown = (callback) => {
 const loadNextQuestion = () => {
   questionAmount++;
   if (questionAmount > 10) {
-    updateTextContent(questionState, `Wow, you scored ${scoreCounter} points. Great job!`);
-    clearText(countdownContainer);
-    isTheQuizOver = true;
-    startButton.style.display = "initial";
-    updateTextContent(startButton, "Go again!");
-    startButton.onclick = restartQuiz;
+    finishQuiz(true);
   } else {
     clearText(questionState, countdownContainer);
     displayRandomQuestion(quizData.questions);
   }
 };
 
-const displayImage = (imageSource) => {
+const finishQuiz = (boolean) => {
+    isTheQuizOver = boolean;
+    updateTextContent(
+      questionState,
+      `Wow, you scored ${scoreCounter} points. Great job!`
+    );
+    clearText(countdownContainer);
+    startButton.style.display = "initial";
+    updateTextContent(startButton, "Go again!");
+    startButton.onclick = restartQuiz;
+};
+
+const displayImage = (imageSource, imageName) => {
   clearText(imageDisplay);
   const img = document.createElement("img");
   img.src = imageSource;
+  img.alt = imageName;
   imageDisplay.appendChild(img);
 };
 
-const getCorrectSource = (array, prop1, prop2, typeAsString, correctSource) => {
-  return array.find(
-    (elem) => elem[prop1] === typeAsString && elem[prop2] === correctSource
-  );
-};
+
+
+console.log(quizData.sources)
+
+
 
 const throwSourceErrorMessage = (source, correctSourceType) => {
   if (!source) {
@@ -146,59 +156,93 @@ const throwSourceErrorMessage = (source, correctSourceType) => {
   }
 };
 
+const getCorrectImageSource = (array, prop1, prop2) => {
+  return array.find((elem) => {
+    if (elem[prop1].includes(elem[prop2])) {
+      return elem[prop1]
+    } else {
+      throwSourceErrorMessage(array, elem[prop1]);
+    }
+  })
+}; //find the element in the array where the pathToFile includes the imageName
+  // pathToFile: ./assets/images/Triangle.svg, imageName: 'Triangle'
+  //if I use .map() that gives me an array of file paths.
+
+  
+
+const correctSource = getCorrectImageSource(quizData.sources, 'pathToFile', 'imageName');
+
+console.log(correctSource);
+
+
+const handleQuestionDisplay = (questionData) => {
+  const { questionType, answers, sourceFilters, correctAnswer, imageHandler } =
+    questionData;
+
+  
+
+  const correctSource = getCorrectImageSource(quizData.sources, sourceFilters);
+  throwSourceErrorMessage(correctSource, correctAnswer);
+
+  // Display image (using handler for special cases like multiple images)
+  const handleImage = imageHandler(correctSource, );
+  console.log(handleImage);
+  // Display answers
+  displayAnswers(answers, correctAnswer, () => loadNextQuestion());
+};
+
+
 
 const displayRandomQuestion = (arr) => {
   console.log(`You are on question number: ${questionAmount}`);
   const randomQuestion = getRandomizedItem(arr);
   updateTextContent(questionDiv, randomQuestion);
 
-  if (randomQuestion === quizData.questions[0]) {
-    const correctShape = getRandomizedItem(quizData.answers.shapes);
-    const shapeSource = getCorrectSource(
-      quizData.sources,
-      "sourceType",
-      "imageName",
-      "shape",
-      correctShape
-    );
-    throwSourceErrorMessage(shapeSource, correctShape);
-    displayImage(shapeSource.source);
-    displayAnswers(quizData.answers.shapes, correctShape, () =>
-      loadNextQuestion()
-    );
-  } else if (randomQuestion === quizData.questions[1]) {
-    const correctNumber = getRandomizedItem(quizData.answers.numbers);
-    const numberSource = getCorrectSource(
-      quizData.sources,
-      "sourceType",
-      "imageName",
-      "number",
-      correctNumber
-    );
-    throwSourceErrorMessage(numberSource, correctNumber);
-    displayImage(numberSource.source);
-    displayAnswers(quizData.answers.numbers, correctNumber, () =>
-      loadNextQuestion()
-    );
-  } else if (randomQuestion === quizData.questions[2]) {
-    const xCount = Math.floor(Math.random() * 5) + 1;
-    clearText(imageDisplay);
-    const xSource = getCorrectSource(
-      quizData.sources,
-      "sourceType",
-      "imageName",
-      "shapeX",
-      "X"
-    );
+  // Define question configurations
+  const questionConfigs = {
+    "What shape is this?": {
+      questionType: "shape",
+      answers: quizData.answers.shapes, //answers to be displayed
+      sourceFilters: { questionCategory: "shape" }, // THIS SHOULD BE A FILE PATH, NOT A CATEGORY
+      correctAnswer: getRandomizedItem(quizData.answers.shapes), //getting random image, user clicks on button, this is right answer
+      imageHandler: (source, sourceName) => displayImage(source, sourceName), //supposed to display the image
+    },
+    "What number do you see?": {
+      questionType: "number",
+      answers: quizData.answers.numbers,
+      sourceFilters: { questionCategory: "number" },
+      correctAnswer: getRandomizedItem(quizData.answers.numbers),
+      imageHandler: (source, sourceName) => displayImage(source, sourceName),
+    },
+    "How many X's do you see?": {
+      questionType: "shapeX",
+      answers: [1, 2, 3, 4, 5],
+      sourceFilters: { questionCategory: "shapeX", imageName: "X" },
+      correctAnswer: Math.floor(Math.random() * 5) + 1,
+      imageHandler: (source, sourceName) => {
+        clearText(imageDisplay);
+        Array.from({ length: Math.floor(Math.random() * 5) + 1 }).forEach(() => {
+          const img = document.createElement("img");
+          img.src = source;
+          img.alt = sourceName;
+          imageDisplay.appendChild(img);
+        });
+      },
+    },
+  };
 
-    throwSourceErrorMessage(xSource, "X");
-
-    Array.from({ length: xCount }).forEach(() => {
-      const img = document.createElement("img");
-      img.src = xSource.source;
-      imageDisplay.appendChild(img);
-    });
-    displayAnswers([1, 2, 3, 4, 5], xCount, () => loadNextQuestion());
+  // Handle the display of the current question
+  const config = questionConfigs[randomQuestion];
+  if (config) {
+    console.log(
+      `questionType: ${config.questionType}
+      answers: ${config.answers}
+      sourceFilters: ${config.sourceFilters.questionCategory}
+      correctAnswer: ${config.correctAnswer}
+      imageHandler: ${config.imageHandler(correctSource)}
+      `
+    );
+    handleQuestionDisplay(config);
   }
 };
 
@@ -214,7 +258,7 @@ const restartQuiz = () => {
   isTheQuizOver = false;
   updateTextContent(userScore, `Your Score: ${scoreCounter} points`);
   clearText(questionState, countdownContainer, answersList);
-  displayRandomQuestion(quizData.questions);
+  displayRandomQuestion();
   console.clear();
 };
 
