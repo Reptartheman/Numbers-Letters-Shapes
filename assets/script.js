@@ -69,26 +69,47 @@ const getCorrespondingAnswers = (answers) => {
   return answers;
 }
 
+const checkAnswer = (imagePath, selectedAnswer) => {
+  return imagePath.includes(selectedAnswer);
+};
+
 const displayCorrespondingAnswers = (element, answers) => {
   answers.answerButtonsContent.forEach((answer) => {
     const button = document.createElement("button");
     button.textContent = answer;
-    button.addEventListener("click", () => {
-      console.log(`You clicked on: ${answer}`);
-      // Add your logic for correct/incorrect answers here
+    button.addEventListener("click", (e) => {
+      
+      const currentImage = imageDisplay.querySelector('img').src;
+      if (checkAnswer(currentImage, e.target.textContent)) {
+        scoreCounter++;
+        userScore.textContent = `Your Score: ${scoreCounter} points`;
+        questionState.textContent = "Correct!";
+      } else {
+        questionState.textContent = "Incorrect!";
+      }
+      clearText(questionDiv, answersList, imageDisplay);
+      questionAmount++;
+      startCountdown(loadNextQuestion);
     });
     element.appendChild(button);
   });
 }
+
+
 
 const getCategoryForImages = (object) => {
   console.log(object);
   return object.questionCategory;
 }
 
-//get the filePaths that match the category...
-// if the "numbers" category is returned, then the file paths for numbers will be the sources for the displayed image
-
+/**
+ * Description placeholder
+ *
+ * @param {array} array
+ * @param {object} object
+ * @returns {image} imageSource
+ *
+ */
 const getCorrespondingImages = (array, object) => {
   const category = getCategoryForImages(object);
   const imageSources = array.filter((source) => source.questionCategory === category);
@@ -98,23 +119,21 @@ const getCorrespondingImages = (array, object) => {
 
 
 const displayCorrespondingImages = (imageSource) => {
-  clearText(imageDisplay);
-  const sources = getCorrespondingImages(quizConfig, info);
-  
+    clearText(imageDisplay);
+  const sources = getCorrespondingImages(quizConfig, imageSource);
+
   const randomSource = getRandomizedItem(sources);
-  console.log(randomSource.filePaths);
+    console.log(randomSource.filePaths);
   const randomIndex = getRandomNumber(0, randomSource.filePaths.length);
   const image = document.createElement("img");
-  image.src = randomSource.filePaths[randomIndex];
-  imageDisplay.appendChild(image);
+    image.src = randomSource.filePaths[randomIndex];
+    imageDisplay.appendChild(image);
+
+  if (!image.src || !randomSource.questionCategory) {
   throwSourceErrorMessage(image.src, randomSource.questionCategory);
   return image.src;
+  };
 };
-
-
-
-
-
 
 const startQuiz = () => {
   const question = displayRandomQuestion(questionDiv, info);
@@ -122,7 +141,7 @@ const startQuiz = () => {
   const images = displayCorrespondingImages(info)
   isTheQuizStarted = !isTheQuizStarted;
   startButton.style.display = "none";
-  console.log(images);
+  
 };
 
 
@@ -161,7 +180,7 @@ const loadNextQuestion = () => {
     startButton.onclick = restartQuiz;
   } else {
     clearText(questionState, countdownContainer);
-    displayRandomQuestion(quizData.questions);
+    displayRandomQuestion(quizConfig.questionContent);
   }
 };
 
