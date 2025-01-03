@@ -1,3 +1,5 @@
+import { WiredButton } from 'wired-elements';
+
 const questionStateContainer = document.getElementById(
   "questionStateContainer"
 );
@@ -75,7 +77,7 @@ const checkAnswer = (imagePath, selectedAnswer) => {
 
 const displayCorrespondingAnswers = (element, answers) => {
   answers.answerButtonsContent.forEach((answer) => {
-    const button = document.createElement("button");
+    const button = document.createElement("wired-button");
     button.textContent = answer;
     button.addEventListener("click", (e) => {
       

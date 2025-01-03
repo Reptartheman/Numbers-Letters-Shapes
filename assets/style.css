@@ -1,18 +1,66 @@
 @import url("https://fonts.googleapis.com/css2?family=Architects+Daughter&display=swap");
 
-:root{
-    --main-font: "Architects Daughter", cursive;
+:root {
+  --main-font: "Architects Daughter", cursive;
+
+  --size-6: 0.375rem;
+  --size-10: 0.625rem;
+  --size-14: 0.875rem;
+  --size-16: 1rem;
+  --size-18: 1.125rem;
+  --size-20: 1.25rem;
+  --size-24: 1.5rem;
+  --size-26: 1.625rem;
+  --size-30: 1.875rem;
+  --size-40: 2.5rem;
+  --size-50: 3.125rem;
+  --size-60: 3.75rem;
+  --size-70: 4.375rem;
+  --size-80: 5rem;
+  --size-100: 6.25rem;
+  --size-110: 6.875rem;
+  --size-120: 7.5rem;
+  --size-150: 9.375rem;
 }
 
-body{
-    background-color: cornsilk;
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
 }
 
+body,
+html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
 
+.test-border {
+  border: 1px solid red;
+}
+
+body {
+  background-image: url("./images/PLAIN_PAPER.svg");
+  background-repeat: no-repeat;
+  background-size: 138%;
+  background-position-y: 53%;
+  background-position-x: 45%;
+  align-content: center;
+}
+
+.main-container {
+  display: grid;
+  height: 100vh;
+  width: 100vw;
+  grid-template: repeat(8, 1fr) / repeat(12, 1fr);
+}
+
+/* 
 header{
     font-size: xx-large;
     font-family: var(--main-font);
-    background-color: cornflowerblue;
     display: flex;
     justify-content: space-between;
     flex-wrap: row wrap;
@@ -22,7 +70,6 @@ section{
     display: flex;
     font-family: var(--main-font);
     font-weight: bold;
-    background-color: cornsilk;
     justify-content: center;
     padding-top: 60px;
     align-items: center;
@@ -36,21 +83,8 @@ section > p{
 }
 
 
-
-button{
-    position: relative;
-    overflow: hidden;
-    cursor: pointer;
-    transition: all .35s ease-out;
-    justify-content: center;
-    background-color: cornsilk;
-    color: cornflowerblue; 
-    font-size: x-large;
-    font-family: var(--main-font);
-    font-weight: bolder;
-    width: 7em;
-    gap: 15px;
-    cursor: pointer;
+.start-button {
+    font-size: var(--size-40);
 }
 
 .question-state-container {
@@ -59,4 +93,4 @@ button{
 
 .question-state-container p.countdown {
     font-size: 75px;
-}
+} */
