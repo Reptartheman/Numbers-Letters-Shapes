@@ -4,35 +4,70 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Time for a Quiz</title>
+    <title>Numbers, Letters & Shapes</title>
     <link rel="stylesheet" href="./assets/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Architects+Daughter&display=swap" rel="stylesheet">
 </head>
 <body>
-<header>
-    <div id="userScore">Your Score:</div>
-</header>
+    <!-- Score Bar at Top -->
+    <header class="score-bar">
+        <div class="score-display" id="userScore">
+            <span class="score-label">Score:</span>
+            <span class="score-value" id="scoreValue">0</span>
+        </div>
+        <div class="question-counter" id="questionCounter">
+            <span class="question-label">Question:</span>
+            <span class="question-value" id="questionValue">1 / 10</span>
+        </div>
+    </header>
 
-<section id="quiz">
-    <button id="startButton">Start</button>
-    <h1 id="questions"></h1>
-    <div class="question-state-container" id="questionStateContainer">
-        <h1 class="question-state" id="questionState"></h1>
-        <p class="countdown" id="countdown"></p>
-    </div>
-    <div id="imageDisplay"></div>
-    <div id="answers">
-        <ul id="answersList"></ul>
-    </div>
-</section>
+    <!-- Main Quiz Area -->
+    <main class="quiz-container">
+        <!-- Start Screen -->
+        <section class="start-screen" id="startScreen">
+            <h1 class="game-title">Numbers, Letters & Shapes</h1>
+            <p class="game-subtitle">Let's Learn Together!</p>
+            <button class="start-button" id="startButton">
+                <span>Start!</span>
+            </button>
+        </section>
 
+        <!-- Question Screen -->
+        <section class="question-screen hidden" id="questionScreen">
+            <!-- Question Text -->
+            <h1 class="question-text" id="questionText"></h1>
+            
+            <!-- Image Display Area -->
+            <div class="image-container" id="imageDisplay">
+                <canvas id="canvas"></canvas>
+            </div>
+            
+            <!-- Answer Buttons Grid (Kahoot-style) -->
+            <div class="answers-grid" id="answersGrid">
+                <!-- Answer buttons will be dynamically created -->
+            </div>
+        </section>
 
+        <!-- Feedback Screen (Correct/Incorrect) -->
+        <section class="feedback-screen hidden" id="feedbackScreen">
+            <div class="feedback-content">
+                <h1 class="feedback-text" id="feedbackText"></h1>
+                <p class="countdown-text" id="countdown"></p>
+            </div>
+        </section>
 
+        <!-- End Screen -->
+        <section class="end-screen hidden" id="endScreen">
+            <h1 class="end-title">Great Job!</h1>
+            <p class="final-score" id="finalScore">You scored 0 points!</p>
+            <button class="start-button" id="restartButton">
+                <span>Play Again!</span>
+            </button>
+        </section>
+    </main>
 
-
-
-
-
-
-<script type="module" src="./assets/script.js"></script>
+    <script type="module" src="./assets/script.js"></script>
 </body>
 </html>
